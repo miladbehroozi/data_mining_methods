@@ -59,4 +59,9 @@ for column in df.select_dtypes(include=['float64', 'int64']).columns:
 # Print out the number of outliers for each column
 for column, count in outliers_counts.items():
     print(f'{column}: {count} outliers')
+# Remove rows with any numeric value having Z-score > 3
+numeric_df = df.select_dtypes(include=['float64', 'int64'])
+z_scores = np.abs(zscore(numeric_df))
+df = df[(z_scores < 3).all(axis=1)]
 
+print(f'Dataset shape after removing outliers: {df.shape}')
